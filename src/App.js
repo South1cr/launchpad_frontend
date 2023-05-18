@@ -1,23 +1,51 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { useState } from 'react'; 
+import { Routes, Route, Outlet, Navigate } from 'react-router-dom';
+import Navbar from "./components/Navbar";
+import NotesMenu from "./components/NotesMenu";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import NoteEditor from "./pages/NoteEditor";
 
 function App() {
+
+  const [showNotesMenu, setShowNotesMenu] = useState(window.innerWidth > 768);
+
+  const toggleMenu = () => {
+    setShowNotesMenu(!showNotesMenu);
+  }
+
+  const getToken = () => {
+    return localStorage.getItem("authToken");
+  };
+
+  const LoggedIn = () => {
+    return getToken() ? <Outlet /> : <Navigate to="/login" />;
+  };
+
+  const NotLoggedIn = () => {
+    return !getToken() ? <Outlet /> : <Navigate to="/" />;
+  };
+
+  
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Navbar menuOnClick={toggleMenu}/>
+      <NotesMenu shown={showNotesMenu} />
+      <div id="container" style={{marginLeft: showNotesMenu ? '250px' : '0px'}}>
+        <Routes>
+          <Route element={<NotLoggedIn />}>
+            <Route path='/login' element={<Login />} />
+            <Route path='/signup' element={<Signup />} />
+          </Route>
+          <Route element={<LoggedIn />}>
+            <Route path='/' element={<NoteEditor />} />
+            <Route path='/:noteId' element={<></>} />
+            <Route path='/settings' element={<></>} />
+          </Route>
+        </Routes>
+      </div>
     </div>
   );
 }
