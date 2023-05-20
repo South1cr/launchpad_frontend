@@ -1,7 +1,6 @@
 import { useContext, useState } from "react";
-
 import { useNavigate, Link } from "react-router-dom";
-
+import { Button, Input, Form } from "antd";
 import { AuthContext } from "../context/auth.context";
 import { LoadingContext } from "../context/loading.context";
 
@@ -40,24 +39,32 @@ const Signup = () => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <label>email</label><br></br>
-        <input
+      <h2>Sign Up</h2>
+      <form>
+        <label>Email</label>
+        <br></br>
+        <Input
           type="email"
           name="email"
           value={newUser.email}
           onChange={handleChange}
-        /><br></br>
+        />
+        <br></br>
 
-        <label>password</label><br></br>
-        <input
+        <label>Password</label>
+        <br></br>
+        <Input
           type="password"
           name="password"
           value={newUser.password}
           onChange={handleChange}
-        /><br></br>
+        />
+        <br></br>
+        <br></br>
 
-        <button type="submit">Signup</button>
+        <Button type="primary" onClick={handleSubmit}>
+          Signup
+        </Button>
         <p>
           Already have an account? <Link to="/login">Login</Link>
         </p>

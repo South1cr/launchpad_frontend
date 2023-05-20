@@ -1,10 +1,8 @@
 import { useContext, useState } from "react";
-
 import { useNavigate, Link } from "react-router-dom";
-
+import { Button, Input } from "antd";
 import { AuthContext } from "../context/auth.context";
 import { LoadingContext } from "../context/loading.context";
-
 import { post } from "../services/authService";
 
 const Login = () => {
@@ -40,10 +38,11 @@ const Login = () => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <label>email</label>
+        <h2>Login</h2>
+      <form>
+        <label>Email</label>
         <br></br>
-        <input
+        <Input
           type="email"
           name="email"
           value={thisUser.email}
@@ -51,17 +50,19 @@ const Login = () => {
         />
         <br></br>
 
-        <label>password</label>
+        <label>Password</label>
         <br></br>
-        <input
+        <Input
           type="password"
           name="password"
           value={thisUser.password}
           onChange={handleChange}
         />
-        <br></br>
+        <br></br><br></br>
 
-        <button type="submit">Login</button>
+        <Button type="primary" onClick={handleSubmit}>
+          Login
+        </Button>
 
         <p>
           Don't have an account? <Link to="/signup">Signup</Link>

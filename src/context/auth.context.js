@@ -1,9 +1,6 @@
 import { useEffect, createContext, useContext } from "react";
-
 import { useNavigate } from "react-router-dom";
-
 import { LoadingContext } from "./loading.context";
-
 import { get } from "../services/authService";
 
 const AuthContext = createContext();
@@ -30,7 +27,6 @@ function AuthProvider({ children }) {
       // We must send the JWT token in the request's "Authorization" Headers
       get("/users/verify")
         .then((response) => {
-          console.log("user", response.data);
           // If the server verifies that the JWT token is valid
           const user = response.data;
           // Update state variables
@@ -41,14 +37,13 @@ function AuthProvider({ children }) {
         .catch((error) => {
           // If the server sends an error response (invalid token)
           // Update state variables
-
+          navigate("/login");
           setIsLoading(false);
           setUser(null);
           removeToken();
         });
     } else {
       // If the token is not available (or is removed)
-
       setIsLoading(false);
       setUser(null);
     }
@@ -60,7 +55,7 @@ function AuthProvider({ children }) {
     // and update the state variables
     authenticateUser();
 
-    navigate("/");
+    navigate("/login");
   };
 
   useEffect(() => {

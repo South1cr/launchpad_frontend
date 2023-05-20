@@ -5,7 +5,8 @@ import Navbar from "./components/Navbar";
 import NotesMenu from "./components/NotesMenu";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import NoteEditor from "./pages/NoteEditor";
+import CreateNote from "./pages/CreateNote";
+import UpdateNote from "./pages/UpdateNote";
 
 function App() {
 
@@ -27,22 +28,21 @@ function App() {
     return !getToken() ? <Outlet /> : <Navigate to="/" />;
   };
 
-  
 
   return (
     <div className="App">
-      <Navbar menuOnClick={toggleMenu}/>
+      <Navbar menuOnClick={toggleMenu} menuActive={showNotesMenu}/>
       <NotesMenu shown={showNotesMenu} />
-      <div id="container" style={{marginLeft: showNotesMenu ? '250px' : '0px'}}>
+      <div id="container" style={{marginLeft: showNotesMenu ? '270px' : '0px'}}>
         <Routes>
           <Route element={<NotLoggedIn />}>
             <Route path='/login' element={<Login />} />
             <Route path='/signup' element={<Signup />} />
           </Route>
           <Route element={<LoggedIn />}>
-            <Route path='/' element={<NoteEditor />} />
-            <Route path='/:noteId' element={<></>} />
-            <Route path='/settings' element={<></>} />
+            <Route exact path='/' element={<CreateNote />} />
+            <Route path='/:noteId' element={<UpdateNote />} />
+            <Route exact path='/settings' element={<></>} />
           </Route>
         </Routes>
       </div>
