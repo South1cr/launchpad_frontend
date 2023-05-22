@@ -1,19 +1,22 @@
 import { useState, useContext, useEffect } from "react";
 import { Button, Input } from "antd";
+import { useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { post } from "../services/authService";
 import { LoadingContext } from "../context/loading.context";
- 
+
 const CreateNote = () => {
   const [title, setTitle] = useState("");
-  const [editorState, setEditorState] = useState("<p>Your content here</p>");
+  const [editorState, setEditorState] = useState("");
 
   const { getNotes, setActiveNote } = useContext(LoadingContext);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     setActiveNote(""); // reset active note
-  }, [])
+  }, []);
 
   const modules = {
     toolbar: [
@@ -37,7 +40,7 @@ const CreateNote = () => {
     })
       .then((res) => {
         getNotes();
-        console.log(res);
+        navigate(`/${res.data._id}`);
       })
       .catch((err) => {
         console.log(err);
@@ -55,7 +58,9 @@ const CreateNote = () => {
       <br></br>
       <ReactQuill modules={modules} onChange={setEditorState} theme="snow" />
       <br></br>
-      <Button type="primary" onClick={handleSubmit}>Create</Button>
+      <Button type="primary" disabled={!title} onClick={handleSubmit}>
+        Create
+      </Button>
     </>
   );
 };

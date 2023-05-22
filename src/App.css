@@ -17,6 +17,32 @@ body {
   display: none;
 }
 
+/* ant overrides */
+.ant-divider {
+  border-color: rgba(5, 5, 5, 1);
+}
+
+.ant-modal-content {
+  border-radius: 0px !important;
+  border: 1px solid black;
+}
+
+.ant-select {
+  width: unset;
+}
+
+.ant-dropdown-menu {
+  border-radius: 0px !important;
+}
+
+/* tiny mce overrides */
+/*
+.tox {
+  width: 100%;
+  border-radius: 0px !important;
+  max-width: 700px;
+}
+*/
 #navbar {
   display: flex;
   justify-content: space-between;
@@ -25,7 +51,9 @@ body {
   border-bottom: 1px solid black;
   z-index: 2;
   background: #fff;
-  position: relative;
+  position: fixed;
+  right: 0px;
+  left: 0px;
 }
 
 #nav-menu {
@@ -41,7 +69,7 @@ body {
 }
 
 #notes-menu {
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 0;
   bottom: 0;
@@ -78,6 +106,10 @@ body {
   color: #199EFF;
 }
 
+#notes-menu-sort {
+ font-size: 18px;
+}
+
 .notes-menu-link {
   width: 100%;
   padding-left: 20px;
@@ -101,7 +133,7 @@ body {
   display: flex;
   align-items: center;
   flex-direction: column;
-  padding: 30px 10px;
+  padding: 75px 10px;
   transition: margin .4s;
   -webkit-transition: margin .4s;
   -moz-transition: margin .4s;
@@ -124,8 +156,7 @@ body {
   width: 100%;
   font-size: 56px;
 }
-
-.quill {
-  width: 100%;
-  max-width: 700px;
-}
+/*
+#editor-shim {
+  height: 400px;
+}*/
