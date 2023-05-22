@@ -2,11 +2,11 @@ import { useContext, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Button, Input } from "antd";
 import { AuthContext } from "../context/auth.context";
-import { LoadingContext } from "../context/loading.context";
+import { DataContext } from "../context/data.context";
 import { post } from "../services/authService";
 
 const Login = () => {
-  const { setUser } = useContext(LoadingContext);
+  const { setUser } = useContext(DataContext);
 
   const { storeToken } = useContext(AuthContext);
 
@@ -14,6 +14,7 @@ const Login = () => {
     email: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -23,22 +24,25 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setLoading(true);
 
     post("/users/login", thisUser)
       .then((results) => {
-        console.log("Login", results.data);
         storeToken(results.data.authToken);
         setUser(results.data.user);
         navigate("/");
       })
       .catch((err) => {
-        console.log(err);
-      });
+        console.log(err)
+      })
+      .finally(() => {
+        setLoading(false);
+      })
   };
 
   return (
     <div>
-        <h2>Login</h2>
+      <h2>Login</h2>
       <form>
         <label>Email</label>
         <br></br>
@@ -49,7 +53,6 @@ const Login = () => {
           onChange={handleChange}
         />
         <br></br>
-
         <label>Password</label>
         <br></br>
         <Input
@@ -58,9 +61,9 @@ const Login = () => {
           value={thisUser.password}
           onChange={handleChange}
         />
-        <br></br><br></br>
-
-        <Button type="primary" onClick={handleSubmit}>
+        <br></br>
+        <br></br>
+        <Button type="primary" onClick={handleSubmit} loading={loading}>
           Login
         </Button>
 

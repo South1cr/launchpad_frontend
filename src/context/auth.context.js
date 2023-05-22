@@ -1,12 +1,12 @@
 import { useEffect, createContext, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { LoadingContext } from "./loading.context";
+import { DataContext } from "./data.context";
 import { get } from "../services/authService";
 
 const AuthContext = createContext();
 
 function AuthProvider({ children }) {
-  const { setIsLoading, setUser } = useContext(LoadingContext);
+  const { setIsLoading, setUser } = useContext(DataContext);
 
   const navigate = useNavigate();
 

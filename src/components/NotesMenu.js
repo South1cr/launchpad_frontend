@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { Divider, Input, Button, Dropdown, Space } from "antd";
 import { Link } from "react-router-dom";
-import { LoadingContext } from "../context/loading.context";
+import { DataContext } from "../context/data.context";
 
 const sortByUpdatedDate = (notes) => {
   notes.sort(function (a, b) {
@@ -52,11 +52,11 @@ const dropDownItems = [
   },
 ];
 
-const NotesMenu = ({ shown }) => {
+const NotesMenu = () => {
   const [filter, setFilter] = useState("");
   const [sort, setSort] = useState("updatedAt");
 
-  const { notes, activeNote, user } = useContext(LoadingContext);
+  const { notes, activeNote, user, showNotesMenu } = useContext(DataContext);
 
   const filtered = notes.filter((elem) => {
     return elem.title.includes(filter);
@@ -72,11 +72,14 @@ const NotesMenu = ({ shown }) => {
   }
 
   return (
-    <div id="notes-menu" style={{ marginLeft: shown ? "0px" : "-270px" }}>
+    <div
+      id="notes-menu"
+      style={{ marginLeft: showNotesMenu ? "0px" : "-270px" }}
+    >
       {user && (
         <>
           <Link id="notes-menu-create" className="link-no-decoration" to={`/`}>
-            Create Note&nbsp;<i className="fa-solid fa-plus"></i>
+              Create Note&nbsp;<i className="fa-solid fa-plus"></i>
           </Link>
           <Space>
             <Input
@@ -121,27 +124,6 @@ const NotesMenu = ({ shown }) => {
               </div>
             );
           })}
-          {/*<Modal
-            closeIcon={<i className="fa-solid fa-xmark"></i>}
-            title="Settings"
-            open={showModal}
-            onCancel={() => {
-              setShowModal(false);
-            }}
-          >
-            <label>Sort By&emsp;</label>
-            <Select
-              defaultValue="updatedAt"
-              style={{ width: 120 }}
-              onChange={(e) => setSort(e.target.value)}
-              options={[
-                { value: "updatedAt", label: "Updated Date" },
-                { value: "createdAt", label: "Created Date" },
-                { value: "title", label: "title" },
-              ]}
-            />
-            <br></br>
-            </Modal>*/}
         </>
       )}
     </div>

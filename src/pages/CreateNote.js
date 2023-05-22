@@ -1,16 +1,16 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useRef } from "react";
 import { Button, Input } from "antd";
 import { useNavigate } from "react-router-dom";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+import { Editor } from "@tinymce/tinymce-react";
 import { post } from "../services/authService";
-import { LoadingContext } from "../context/loading.context";
+import { DataContext } from "../context/data.context";
 
 const CreateNote = () => {
   const [title, setTitle] = useState("");
-  const [editorState, setEditorState] = useState("");
+  const [loading, setLoading] = useState("");
+  const editorRef = useRef(null);
 
-  const { getNotes, setActiveNote } = useContext(LoadingContext);
+  const { getNotes, setActiveNote } = useContext(DataContext);
 
   const navigate = useNavigate();
 
@@ -18,32 +18,21 @@ const CreateNote = () => {
     setActiveNote(""); // reset active note
   }, []);
 
-  const modules = {
-    toolbar: [
-      [{ font: [] }],
-      [{ header: [1, 2, 3, 4, 5, 6, false] }],
-      ["bold", "italic", "underline", "strike"],
-      [{ color: [] }, { background: [] }],
-      [{ script: "sub" }, { script: "super" }],
-      ["blockquote", "code-block"],
-      [{ list: "ordered" }, { list: "bullet" }],
-      [{ indent: "-1" }, { indent: "+1" }, { align: [] }],
-      ["link", "image"],
-      ["clean"],
-    ],
-  };
-
   const handleSubmit = () => {
+    setLoading(true);
     post("/notes/create", {
       title,
-      content: editorState,
+      content: editorRef.current.getContent(),
     })
       .then((res) => {
         getNotes();
         navigate(`/${res.data._id}`);
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err)
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -56,9 +45,26 @@ const CreateNote = () => {
         onChange={(e) => setTitle(e.target.value)}
       ></Input>
       <br></br>
-      <ReactQuill modules={modules} onChange={setEditorState} theme="snow" />
+      <Editor
+        apiKey="ot2bdgoybtbapmogrubcozadhnvaw74nono3sw2rqw183cze"
+        onInit={(evt, editor) => (editorRef.current = editor)}
+        initialValue={""}
+        init={{
+          height: 500,
+          menubar: true,
+          toolbar:
+            "undo redo | formatselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent ",
+          content_style:
+            "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+        }}
+      />
       <br></br>
-      <Button type="primary" disabled={!title} onClick={handleSubmit}>
+      <Button
+        type="primary"
+        disabled={!title}
+        onClick={handleSubmit}
+        loading={loading}
+      >
         Create
       </Button>
     </>

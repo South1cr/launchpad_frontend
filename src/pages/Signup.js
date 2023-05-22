@@ -2,12 +2,12 @@ import { useContext, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Button, Input, Form } from "antd";
 import { AuthContext } from "../context/auth.context";
-import { LoadingContext } from "../context/loading.context";
+import { DataContext } from "../context/data.context";
 
 import { post } from "../services/authService";
 
 const Signup = () => {
-  const { setUser } = useContext(LoadingContext);
+  const { setUser } = useContext(DataContext);
 
   const { storeToken } = useContext(AuthContext);
 
@@ -15,6 +15,7 @@ const Signup = () => {
     email: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -24,7 +25,7 @@ const Signup = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    setLoading(true);
     post("/users/signup", newUser)
       .then((results) => {
         console.log("Signup", results.data);
@@ -33,8 +34,11 @@ const Signup = () => {
         navigate("/");
       })
       .catch((err) => {
-        console.log(err);
-      });
+        console.log(err)
+      })
+      .finally(()=> {
+        setLoading(false);
+      })
   };
 
   return (
@@ -62,7 +66,7 @@ const Signup = () => {
         <br></br>
         <br></br>
 
-        <Button type="primary" onClick={handleSubmit}>
+        <Button type="primary" onClick={handleSubmit} loading={loading}>
           Signup
         </Button>
         <p>

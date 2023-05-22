@@ -2,10 +2,10 @@ import { Link } from "react-router-dom";
 import { Button } from "antd";
 import { useContext } from "react";
 import { AuthContext } from "../context/auth.context";
-import { LoadingContext } from "../context/loading.context";
+import { DataContext } from "../context/data.context";
 
 const Navbar = ({ menuOnClick, menuActive }) => {
-  const { user } = useContext(LoadingContext);
+  const { user, toggleMenu, showNotesMenu} = useContext(DataContext);
   const { logOutUser } = useContext(AuthContext);
 
   return (
@@ -13,8 +13,8 @@ const Navbar = ({ menuOnClick, menuActive }) => {
       <div>
         <Button
           id="nav-menu"
-          className={menuActive ? "active" : ""}
-          onClick={menuOnClick}
+          className={showNotesMenu ? "active" : ""}
+          onClick={toggleMenu}
           type="text"
         >
           <i className="fa-solid fa-bars navbar-icon"></i>

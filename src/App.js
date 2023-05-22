@@ -1,20 +1,18 @@
 import "./App.css";
-import { useState } from 'react'; 
+import { useContext } from 'react'; 
 import { Routes, Route, Outlet, Navigate } from 'react-router-dom';
+import { DataContext } from "./context/data.context";
 import Navbar from "./components/Navbar";
 import NotesMenu from "./components/NotesMenu";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import CreateNote from "./pages/CreateNote";
 import UpdateNote from "./pages/UpdateNote";
+import SharedNote from "./pages/SharedNote"; 
 
 function App() {
 
-  const [showNotesMenu, setShowNotesMenu] = useState(window.innerWidth > 768);
-
-  const toggleMenu = () => {
-    setShowNotesMenu(!showNotesMenu);
-  }
+  const { showNotesMenu } = useContext(DataContext);
 
   const getToken = () => {
     return localStorage.getItem("authToken");
@@ -28,12 +26,11 @@ function App() {
     return !getToken() ? <Outlet /> : <Navigate to="/" />;
   };
 
-
   return (
     <div className="App">
-      <Navbar menuOnClick={toggleMenu} menuActive={showNotesMenu}/>
-      <NotesMenu shown={showNotesMenu} />
-      <div id="container" style={{marginLeft: showNotesMenu ? '270px' : '0px'}}>
+      <Navbar/>
+      <NotesMenu />
+      <div id="main-content" style={{marginLeft: showNotesMenu ? '270px' : '0px'}}>
         <Routes>
           <Route element={<NotLoggedIn />}>
             <Route path='/login' element={<Login />} />
@@ -42,8 +39,8 @@ function App() {
           <Route element={<LoggedIn />}>
             <Route exact path='/' element={<CreateNote />} />
             <Route path='/:noteId' element={<UpdateNote />} />
-            <Route exact path='/settings' element={<></>} />
           </Route>
+          <Route path='/shared/:shareId' element={<SharedNote />} />
         </Routes>
       </div>
     </div>

@@ -6,18 +6,18 @@ import reportWebVitals from './reportWebVitals';
 
 import { BrowserRouter } from 'react-router-dom'
 
-import { LoadingProvider } from './context/loading.context';
+import { DataProvider } from './context/data.context';
 import { AuthProvider } from './context/auth.context';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <LoadingProvider>
+      <DataProvider>
         <AuthProvider>
           <App />
         </AuthProvider>
-      </LoadingProvider>
+      </DataProvider>
     </BrowserRouter>
   </React.StrictMode>
 );

@@ -3,11 +3,6 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
-.flex {
-  display: flex;
-  align-items: center;
-}
-
 .link-no-decoration {
   text-decoration: none;
   color: black;
@@ -35,14 +30,31 @@ body {
   border-radius: 0px !important;
 }
 
+.ant-input.shared {
+  background: transparent;
+  color: #000;
+}
+
 /* tiny mce overrides */
-/*
-.tox {
+.tox-tinymce {
   width: 100%;
   border-radius: 0px !important;
   max-width: 700px;
+  border: 1px solid #ccc !important;
 }
-*/
+
+.tox-tinymce--disabled {
+  /*border: none !important;*/
+}
+
+.tox-tinymce--disabled .tox-editor-header {
+  display: none !important;
+}
+
+.tox-statusbar__branding {
+  display: none;
+}
+
 #navbar {
   display: flex;
   justify-content: space-between;
@@ -100,6 +112,7 @@ body {
 
 #notes-menu-create {
   margin: 20px 0;
+  font-size: 18px;
 }
 
 #notes-menu-create:hover {
@@ -129,11 +142,11 @@ body {
   font-weight: bold;
 }
 
-#container {
+#main-content {
   display: flex;
   align-items: center;
   flex-direction: column;
-  padding: 75px 10px;
+  padding: 75px 20px;
   transition: margin .4s;
   -webkit-transition: margin .4s;
   -moz-transition: margin .4s;
@@ -143,7 +156,7 @@ body {
 }
 
 @media screen and (max-width: 768px) {
-  #container {
+  #main-content {
     margin-left: 0px !important;
   }
 }
@@ -156,7 +169,18 @@ body {
   width: 100%;
   font-size: 56px;
 }
-/*
-#editor-shim {
-  height: 400px;
-}*/
+
+#note-dates {
+  width: 100%;
+  max-width: 700px;
+  color: #aaa;
+}
+
+#spinner-container {
+  width: 100%;
+  max-width: 700px;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
