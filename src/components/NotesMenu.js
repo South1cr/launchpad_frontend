@@ -19,13 +19,8 @@ const sortByCreatedDate = (notes) => {
 
 const sortByTitle = (notes) => {
   notes.sort(function (a, b) {
-    if (a.title < b.title) {
-      return -1;
-    }
-    if (a.title > b.title) {
-      return 1;
-    }
-    return 0;
+    console.log(a.title, b.title);
+    return a.title.localeCompare(b.title);
   });
   return notes;
 };
@@ -68,6 +63,7 @@ const NotesMenu = () => {
   } else if (sort === "createdAt") {
     sorted = sortByCreatedDate(filtered);
   } else if (sort === "title") {
+    console.log('ran')
     sorted = sortByTitle(filtered);
   }
 

@@ -4,7 +4,7 @@ import { post } from "../services/authService";
 import { DataContext } from "../context/data.context";
 import { thisUrl } from "../services/baseUrl";
 
-const ShareNote = () => {
+const ShareNote = ({buttonSize}) => {
   const { activeNote } = useContext(DataContext);
 
   const [shareCode, setShareCode] = useState(false);
@@ -17,13 +17,13 @@ const ShareNote = () => {
       noteId: activeNote,
     })
       .then((res) => {
-        if(res && res.data){
-            setShareCode(res.data.shareCode);
-            setShowModal(true);
+        if (res && res.data) {
+          setShareCode(res.data.shareCode);
+          setShowModal(true);
         }
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
       })
       .finally(() => {
         setLoading(false);
@@ -32,7 +32,13 @@ const ShareNote = () => {
 
   return (
     <>
-      <Button onClick={shareNote} loading={loading} type="primary" title="Share">
+      <Button
+        onClick={shareNote}
+        loading={loading}
+        type="primary"
+        title="Share"
+        size={buttonSize}
+      >
         <i className="fa-solid fa-share"></i>
       </Button>
       <Modal

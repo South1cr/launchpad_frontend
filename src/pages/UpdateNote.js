@@ -22,7 +22,6 @@ const UpdateNote = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log('rerendered')
     const note = notes.find((elem) => elem._id === noteId);
     if (note) {
       setTitle(note.title);
@@ -43,7 +42,7 @@ const UpdateNote = () => {
         getNotes();
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
       })
       .finally(() => {
         setUpdateLoading(false);
@@ -58,7 +57,7 @@ const UpdateNote = () => {
         navigate("/");
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
       })
       .finally(() => {
         setDeleteLoading(false);
@@ -82,10 +81,34 @@ const UpdateNote = () => {
         onChange={(e) => setTitle(e.target.value)}
       ></Input>
       <br></br>
-      <div id="note-dates">
-        <span>Updated:&nbsp;{new Date(note.updatedAt).toLocaleString()}</span>
-        &emsp;
-        <span>Created:&nbsp;{new Date(note.createdAt).toLocaleString()}</span>
+      <div id="note-display">
+        <Space>
+          <span>Updated:&nbsp;{new Date(note.updatedAt).toLocaleString()}</span>
+          <span>Created:&nbsp;{new Date(note.createdAt).toLocaleString()}</span>
+        </Space>
+        <Space id="note-toolbar">
+          {/*<Button
+            type="primary"
+            disabled={!title}
+            onClick={updateNote}
+            loading={updateLoading}
+            size="small"
+            title="Save"
+          >
+            <i className="fa-solid fa-floppy-disk"></i>
+          </Button>
+          <ShareNote buttonSize='small' />
+          <Button
+            onClick={() => setShowModal(true)}
+            type="primary"
+            loading={deleteLoading}
+            danger
+            size="small"
+            title="delete"
+          >
+            <i className="fa-solid fa-trash"></i>
+  </Button>*/}
+        </Space>
       </div>
       <br></br>
       <Editor
@@ -93,12 +116,17 @@ const UpdateNote = () => {
         onInit={(evt, editor) => (editorRef.current = editor)}
         initialValue={editorState}
         init={{
-          height: 500,
-          menubar: true,
+          menubar: false,
+          plugins: [
+            'autoresize',
+            'insertdatetime',
+            'link',
+            'image'
+          ],
           toolbar:
-            "undo redo | formatselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | help",
+            "undo redo spellcheckdialog | blocks fontfamily fontsize | bold italic underline forecolor backcolor | link image | align lineheight checklist bullist numlist | indent outdent | removeformat typography | insertdatetime media",
           content_style:
-            "body { font-family:Roboto,sans-serif; font-size:14px }",
+            "body { font-family:Helvetica,sans-serif; font-size:14px }",
         }}
       />
 
@@ -110,7 +138,7 @@ const UpdateNote = () => {
           onClick={updateNote}
           loading={updateLoading}
         >
-          Update
+          Save
         </Button>
         <ShareNote />
         <Button

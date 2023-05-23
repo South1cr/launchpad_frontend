@@ -55,6 +55,28 @@ body {
   display: none;
 }
 
+.tox-dialog {
+  border-radius: 0px !important;
+}
+
+.tox-dialog-wrap__backdrop {
+  background: rgba(0, 0, 0, 0.45) !important;
+}
+
+.tox-button {
+  color: #fff !important;
+  background-color: #1677ff !important;
+  box-shadow: 0 2px 0 rgba(5, 145, 255, 0.1) !important;
+  font-weight: normal !important;
+}
+
+.tox-button.tox-button--secondary {
+  color: rgba(0, 0, 0, 0.88) !important;
+  background-color: #ffffff !important;
+  border-color: #d9d9d9 !important;
+}
+
+
 #navbar {
   display: flex;
   justify-content: space-between;
@@ -170,12 +192,6 @@ body {
   font-size: 56px;
 }
 
-#note-dates {
-  width: 100%;
-  max-width: 700px;
-  color: #aaa;
-}
-
 #spinner-container {
   width: 100%;
   max-width: 700px;
@@ -183,4 +199,20 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+#note-display {
+  width: 100%;
+  max-width: 700px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  color: #aaa;
+}
+
+@media screen and (max-width: 768px) {
+  #note-toolbar {
+    display: none;
+  }
 }

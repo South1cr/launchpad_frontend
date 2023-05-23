@@ -51,9 +51,9 @@ const CreateNote = () => {
         initialValue={""}
         init={{
           height: 500,
-          menubar: true,
+          menubar: false,
           toolbar:
-            "undo redo | formatselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent ",
+            "undo redo spellcheckdialog  | blocks fontfamily fontsize | bold italic underline forecolor backcolor | link image | align lineheight checklist bullist numlist | indent outdent | removeformat typography",
           content_style:
             "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
         }}
