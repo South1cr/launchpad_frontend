@@ -15,8 +15,7 @@ const quillModules = {
     [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
     [{ 'font': [] }],    // toggled buttons
     ['blockquote'],
-  
-    [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+                // custom button values
     [{ 'list': 'ordered'}, { 'list': 'bullet' }],                         // text direction
   
     [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme

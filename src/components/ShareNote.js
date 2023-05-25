@@ -54,9 +54,11 @@ const ShareNote = ({buttonSize}) => {
       >
         <p>
           Your share link:{" "}
+          <br></br>
           <a
             href={`${thisUrl}/shared/${shareCode}`}
           >{`${thisUrl}/shared/${shareCode}`}</a>{" "}
+          <br></br>
           Anyone with this link can view this note.
         </p>
       </Modal>

@@ -13,7 +13,6 @@ const quillModules = {
     [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
     [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
     [{ 'font': [] }],    // toggled buttons
-    [{ 'header': 1 }, { 'header': 2 }],
     ['blockquote'],
                  // custom button values
     [{ 'list': 'ordered'}, { 'list': 'bullet' }],                         // text direction

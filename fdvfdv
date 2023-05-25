@@ -1,0 +1,42 @@
+[1mdiff --git a/src/components/ShareNote.js b/src/components/ShareNote.js[m
+[1mindex 129a8cb..cfe53ec 100644[m
+[1m--- a/src/components/ShareNote.js[m
+[1m+++ b/src/components/ShareNote.js[m
+[36m@@ -54,9 +54,11 @@[m [mconst ShareNote = ({buttonSize}) => {[m
+       >[m
+         <p>[m
+           Your share link:{" "}[m
+[32m+[m[32m          <br></br>[m
+           <a[m
+             href={`${thisUrl}/shared/${shareCode}`}[m
+           >{`${thisUrl}/shared/${shareCode}`}</a>{" "}[m
+[32m+[m[32m          <br></br>[m
+           Anyone with this link can view this note.[m
+         </p>[m
+       </Modal>[m
+[1mdiff --git a/src/pages/CreateNote.js b/src/pages/CreateNote.js[m
+[1mindex 05953bd..a8338eb 100644[m
+[1m--- a/src/pages/CreateNote.js[m
+[1m+++ b/src/pages/CreateNote.js[m
+[36m@@ -13,7 +13,6 @@[m [mconst quillModules = {[m
+     [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown[m
+     [{ 'header': [1, 2, 3, 4, 5, 6, false] }],[m
+     [{ 'font': [] }],    // toggled buttons[m
+[31m-    [{ 'header': 1 }, { 'header': 2 }],[m
+     ['blockquote'],[m
+                  // custom button values[m
+     [{ 'list': 'ordered'}, { 'list': 'bullet' }],                         // text direction[m
+[1mdiff --git a/src/pages/UpdateNote.js b/src/pages/UpdateNote.js[m
+[1mindex ac5bec5..f4b5ab6 100644[m
+[1m--- a/src/pages/UpdateNote.js[m
+[1m+++ b/src/pages/UpdateNote.js[m
+[36m@@ -15,8 +15,7 @@[m [mconst quillModules = {[m
+     [{ 'header': [1, 2, 3, 4, 5, 6, false] }],[m
+     [{ 'font': [] }],    // toggled buttons[m
+     ['blockquote'],[m
+[31m-  [m
+[31m-    [{ 'header': 1 }, { 'header': 2 }],               // custom button values[m
+[32m+[m[32m                // custom button values[m
+     [{ 'list': 'ordered'}, { 'list': 'bullet' }],                         // text direction[m
+   [m
+     [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme[m
