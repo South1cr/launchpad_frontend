@@ -1,6 +1,8 @@
 import { useContext, useState } from "react";
 import { Divider, Input, Button, Dropdown, Space, Spin } from "antd";
 import { Link } from "react-router-dom";
+import "react-perfect-scrollbar/dist/css/styles.css";
+import PerfectScrollbar from "react-perfect-scrollbar";
 import { DataContext } from "../context/data.context";
 
 const sortByUpdatedDate = (notes) => {
@@ -110,26 +112,28 @@ const NotesMenu = () => {
               </Dropdown>
             </Space>
             <Divider dashed />
-            {sorted.map((note, i) => {
-              return (
-                <div
-                  className={`notes-menu-link ${
-                    activeNote === note._id && "active"
-                  }`}
-                  key={i}
-                >
-                  <Link className="link-no-decoration" to={`/${note._id}`}>
-                    {note.title}
-                    &emsp;
-                    <i
-                      className={`fa-solid fa-pencil ${
-                        activeNote !== note._id && "hidden"
-                      }`}
-                    ></i>
-                  </Link>
-                </div>
-              );
-            })}
+            <PerfectScrollbar className="notes-menu-scrollbar"  options={{suppressScrollX:true, useBothWheelAxes:false}}>
+              {sorted.map((note, i) => {
+                return (
+                  <div
+                    className={`notes-menu-link ${
+                      activeNote === note._id && "active"
+                    }`}
+                    key={i}
+                  >
+                    <Link className="link-no-decoration" to={`/${note._id}`}>
+                      {note.title}
+                      &emsp;
+                      <i
+                        className={`fa-solid fa-pencil ${
+                          activeNote !== note._id && "hidden"
+                        }`}
+                      ></i>
+                    </Link>
+                  </div>
+                );
+              })}
+            </PerfectScrollbar>
           </>
         ))}
     </div>

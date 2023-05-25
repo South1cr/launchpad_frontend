@@ -35,48 +35,18 @@ body {
   color: #000;
 }
 
-/* tiny mce overrides */
-
-/*
-.tox-tinymce {
-  width: 100%;
-  border-radius: 0px !important;
-  max-width: 700px;
-  border: 1px solid #ccc !important;
-}
-.tox-tinymce--disabled .tox-editor-header {
-  display: none !important;
-}
-
-.tox-statusbar__branding {
-  display: none;
-}
-
-.tox-dialog {
-  border-radius: 0px !important;
-}
-
-.tox-dialog-wrap__backdrop {
-  background: rgba(0, 0, 0, 0.45) !important;
-}
-
-.tox-button {
-  color: #fff !important;
-  background-color: #1677ff !important;
-  box-shadow: 0 2px 0 rgba(5, 145, 255, 0.1) !important;
-  font-weight: normal !important;
-}
-
-.tox-button.tox-button--secondary {
-  color: rgba(0, 0, 0, 0.88) !important;
-  background-color: #ffffff !important;
-  border-color: #d9d9d9 !important;
-}
-*/
 /* quill overrides */ 
 .quill {
   width: 100%;
   max-width: 700px;
+}
+
+.quill.disabled > .ql-toolbar {
+  display: none;
+}
+
+.quill.disabled > .ql-container {
+  border: none;
 }
 
 #navbar {
@@ -117,12 +87,17 @@ body {
   -moz-transition: margin .4s;
   -o-transition: margin .4s;
   z-index: 1;
-  padding: 65px 10px 0;
+  padding: 65px 0px 30px 10px;
   overflow: hidden;
   display: flex;
   margin-left: 0px;
   flex-direction: column;
   align-items: center;
+}
+
+.notes-menu-scrollbar {
+  width: 100%;
+  margin-left: -30px;
 }
 
 #notes-filter {

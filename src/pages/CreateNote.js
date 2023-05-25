@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect, useRef } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Button, Input, Alert } from "antd";
 import { useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill";
@@ -9,18 +9,23 @@ import { handle401 } from "../services/handle401";
 
 const quillModules = {
   toolbar: [
-    [{ font: [] }],
-    [{ header: [1, 2, 3, 4, 5, 6, true] }],
-    ["bold", "italic", "underline", "strike"],
-    [{ color: [] }, { background: [] }],
-    // [{ script: "sub" }, { script: "super" }],
-    ["blockquote"],
-    [{ list: "ordered" }, { list: "bullet" }],
-    [/*{ indent: "-1" }, { indent: "+1" },*/ { align: [] }],
+    ['bold', 'italic', 'underline', 'strike'],    
+    [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+    [{ 'font': [] }],    // toggled buttons
+    [{ 'header': 1 }, { 'header': 2 }],
+    ['blockquote'],
+                 // custom button values
+    [{ 'list': 'ordered'}, { 'list': 'bullet' }],                         // text direction
+  
+    [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+    [{ 'align': [] }],
+
     ["link", "image", "video"],
-    ["clean"],
-  ],
-};
+  
+    ['clean']                                         // remove formatting button
+  ]
+}
 
 const quillFormats = [
   "header",
@@ -113,6 +118,7 @@ const CreateNote = () => {
         theme="snow"
         modules={quillModules}
         formats={quillFormats}
+        preserveWhitespace={false}
         value={editorState}
         onChange={setEditor}
         placeholder="Content goes here..."

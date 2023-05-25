@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Input, Spin } from "antd";
 import { useParams } from "react-router-dom";
-//import { Editor } from "@tinymce/tinymce-react";
 import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.snow.css';
 import { get } from "../services/authService";
@@ -48,19 +47,9 @@ const SharedNote = () => {
       <ReactQuill
         theme="snow"
         readOnly
+        className="disabled"
         value={note.content}
       />
-      {/*<Editor
-        disabled
-        apiKey="ot2bdgoybtbapmogrubcozadhnvaw74nono3sw2rqw183cze"
-        initialValue={note.content}
-        init={{
-          height: 500,
-          menubar: false,
-          content_style:
-            "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
-        }}
-      />*/}
     </>
   );
 };
