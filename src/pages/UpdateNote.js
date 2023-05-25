@@ -180,6 +180,12 @@ const UpdateNote = () => {
         />
       }
       <br></br>
+      {error && (
+        <>
+          <Alert message={error} banner type="error" showIcon />
+          <br></br>
+        </>
+      )}
       <Space>
         <Button
           type="primary"
