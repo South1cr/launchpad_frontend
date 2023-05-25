@@ -50,7 +50,7 @@ const Signup = () => {
       <h2>Sign Up</h2>
       {error && (
         <>
-          <Alert message={error} type="error" showIcon/>
+          <Alert message={error} banner type="error" showIcon/>
           <br></br>
         </>
       )}

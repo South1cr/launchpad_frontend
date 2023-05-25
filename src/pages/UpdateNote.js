@@ -144,13 +144,13 @@ const UpdateNote = () => {
     <>
       {error && (
         <>
-          <Alert message={error} type="error" showIcon />
+          <Alert message={error} banner type="error" showIcon />
           <br></br>
         </>
       )}
       {message && (
         <>
-          <Alert message={message} type="success" showIcon/>
+          <Alert message={message} banner type="success" showIcon/>
           <br></br>
         </>
       )}
