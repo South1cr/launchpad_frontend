@@ -193,3 +193,15 @@ body {
   align-items: center;
   color: #aaa;
 }
+
+@media screen and (max-width: 768px) {
+  #title {
+    font-size: 34px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  #note-dates {
+    font-size: 14px;
+  }
+}

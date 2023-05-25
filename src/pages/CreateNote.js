@@ -109,6 +109,7 @@ const CreateNote = () => {
       )}
       <Input
         placeholder="Title"
+        id="title"
         className="notes-title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
