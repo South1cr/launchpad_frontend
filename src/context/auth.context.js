@@ -6,7 +6,7 @@ import { get } from "../services/authService";
 const AuthContext = createContext();
 
 function AuthProvider({ children }) {
-  const { setIsLoading, setUser } = useContext(DataContext);
+  const { /*setIsLoading,*/ setUser } = useContext(DataContext);
 
   const navigate = useNavigate();
 
@@ -31,20 +31,20 @@ function AuthProvider({ children }) {
           const user = response.data;
           // Update state variables
 
-          setIsLoading(false);
+          //setIsLoading(false);
           setUser(user);
         })
         .catch((error) => {
           // If the server sends an error response (invalid token)
           // Update state variables
           navigate("/login");
-          setIsLoading(false);
+          ///setIsLoading(false);
           setUser(null);
           removeToken();
         });
     } else {
       // If the token is not available (or is removed)
-      setIsLoading(false);
+      //setIsLoading(false);
       setUser(null);
     }
   };

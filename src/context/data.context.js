@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 import { get } from "../services/authService";
+import { handle401 } from "../services/handle401";
 
 const DataContext = createContext();
 
@@ -15,13 +16,18 @@ const DataProvider = ({ children }) => {
   }
 
   const getNotes = () => {
+    setIsLoading(true)
     if (user) {
       get(`/notes`)
         .then((res) => {
           setNotes(res.data);
         })
         .catch((err) => {
+          handle401(err);
           console.log(err)
+        })
+        .finally(() => {
+          setIsLoading(false)
         })
     }
   };

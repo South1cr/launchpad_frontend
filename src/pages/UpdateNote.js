@@ -1,15 +1,52 @@
 import { useState, useContext, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Button, Input, Space, Modal, Spin } from "antd";
-import { Editor } from "@tinymce/tinymce-react";
+import { Button, Input, Space, Modal, Spin, Alert } from "antd";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import { post, get } from "../services/authService";
 import { DataContext } from "../context/data.context";
 import ShareNote from "../components/ShareNote";
+import { handle401 } from "../services/handle401";
+
+const quillModules = {
+  toolbar: [
+    [{ font: [] }],
+    [{ header: [1, 2, 3, 4, 5, 6, true] }],
+    ["bold", "italic", "underline", "strike"],
+    [{ color: [] }, { background: [] }],
+    // [{ script: "sub" }, { script: "super" }],
+    ["blockquote"],
+    [{ list: "ordered" }, { list: "bullet" }],
+    [/*{ indent: "-1" }, { indent: "+1" },*/ { align: [] }],
+    ["link", "image", "video"],
+    ["clean"],
+  ],
+};
+
+const quillFormats = [
+  "header",
+  "bold",
+  "italic",
+  "underline",
+  "strike",
+  "blockquote",
+  "list",
+  "bullet",
+  "link",
+  "color",
+  "image",
+  "background",
+  "align",
+  "size",
+  "font",
+];
+
+let lastEditorState = "";
 
 const UpdateNote = () => {
   const { noteId } = useParams();
-  const { getNotes, notes, setActiveNote } = useContext(DataContext);
-  const editorRef = useRef(null);
+  const { getNotes, notes, setActiveNote, activeNote } =
+    useContext(DataContext);
 
   const [title, setTitle] = useState("");
   const [loading, setLoading] = useState(true);
@@ -18,16 +55,29 @@ const UpdateNote = () => {
   const [editorState, setEditorState] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [note, setNote] = useState(null);
+  const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
+
+  const setEditor = (state) => {
+    setEditorState(state);
+    lastEditorState = state;
+  };
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    const note = notes.find((elem) => elem._id === noteId);
-    if (note) {
-      setTitle(note.title);
-      setEditorState(note.content);
-      setNote(note);
-      setActiveNote(note._id);
+    const foundNote = notes.find((elem) => elem._id === noteId);
+    if (foundNote) {
+      setTitle(foundNote.title);
+      setNote(foundNote);
+      if (foundNote._id != activeNote) {
+        // new note
+        setActiveNote(foundNote._id);
+        setEditor(foundNote.content);
+      } else {
+        // same note
+        setEditor(lastEditorState);
+      }
       setLoading(false);
     }
   }, [noteId, notes]);
@@ -36,13 +86,22 @@ const UpdateNote = () => {
     setUpdateLoading(true);
     post(`/notes/${noteId}`, {
       title,
-      content: editorRef.current.getContent(),
+      content: editorState,
     })
       .then((res) => {
+        //setMessage("Note successfully updated.");
         getNotes();
       })
       .catch((err) => {
-        console.log(err);
+        handle401(err);
+        try {
+          setError(err.response.data.message);
+        } catch {
+          console.log("Unhandled error", err);
+          if(err.code === 'ERR_NETWORK'){
+            setError('File upload size is too large.');
+          }
+        }
       })
       .finally(() => {
         setUpdateLoading(false);
@@ -57,7 +116,12 @@ const UpdateNote = () => {
         navigate("/");
       })
       .catch((err) => {
-        console.log(err);
+        handle401(err);
+        try {
+          setError(err.response.data.message);
+        } catch {
+          console.log("Unhandled error", err);
+        }
       })
       .finally(() => {
         setDeleteLoading(false);
@@ -72,8 +136,22 @@ const UpdateNote = () => {
     );
   }
 
+  console.log(message);
+
   return (
     <>
+      {error && (
+        <>
+          <Alert message={error} type="error" />
+          <br></br>
+        </>
+      )}
+      {message && (
+        <>
+          <Alert message={message} type="success" />
+          <br></br>
+        </>
+      )}
       <Input
         placeholder="Title"
         className="notes-title"
@@ -81,55 +159,23 @@ const UpdateNote = () => {
         onChange={(e) => setTitle(e.target.value)}
       ></Input>
       <br></br>
-      <div id="note-display">
+      <div id="note-dates">
         <Space>
           <span>Updated:&nbsp;{new Date(note.updatedAt).toLocaleString()}</span>
           <span>Created:&nbsp;{new Date(note.createdAt).toLocaleString()}</span>
         </Space>
-        <Space id="note-toolbar">
-          {/*<Button
-            type="primary"
-            disabled={!title}
-            onClick={updateNote}
-            loading={updateLoading}
-            size="small"
-            title="Save"
-          >
-            <i className="fa-solid fa-floppy-disk"></i>
-          </Button>
-          <ShareNote buttonSize='small' />
-          <Button
-            onClick={() => setShowModal(true)}
-            type="primary"
-            loading={deleteLoading}
-            danger
-            size="small"
-            title="delete"
-          >
-            <i className="fa-solid fa-trash"></i>
-  </Button>*/}
-        </Space>
+        <Space></Space>
       </div>
       <br></br>
-      <Editor
-        apiKey="ot2bdgoybtbapmogrubcozadhnvaw74nono3sw2rqw183cze"
-        onInit={(evt, editor) => (editorRef.current = editor)}
-        initialValue={editorState}
-        init={{
-          menubar: false,
-          plugins: [
-            'autoresize',
-            'insertdatetime',
-            'link',
-            'image'
-          ],
-          toolbar:
-            "undo redo spellcheckdialog | blocks fontfamily fontsize | bold italic underline forecolor backcolor | link image | align lineheight checklist bullist numlist | indent outdent | removeformat typography | insertdatetime media",
-          content_style:
-            "body { font-family:Helvetica,sans-serif; font-size:14px }",
-        }}
-      />
-
+      {
+        <ReactQuill
+          theme="snow"
+          modules={quillModules}
+          formats={quillFormats}
+          value={editorState}
+          onChange={setEditor}
+        />
+      }
       <br></br>
       <Space>
         <Button

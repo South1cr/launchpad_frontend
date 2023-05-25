@@ -1,8 +1,9 @@
 import { useState, useContext } from "react";
-import { Button, Input, Space, Modal } from "antd";
+import { Button, Modal } from "antd";
 import { post } from "../services/authService";
 import { DataContext } from "../context/data.context";
 import { thisUrl } from "../services/baseUrl";
+import { handle401 } from "../services/handle401";
 
 const ShareNote = ({buttonSize}) => {
   const { activeNote } = useContext(DataContext);
@@ -23,6 +24,7 @@ const ShareNote = ({buttonSize}) => {
         }
       })
       .catch((err) => {
+        handle401(err)
         console.log(err);
       })
       .finally(() => {

@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { Divider, Input, Button, Dropdown, Space } from "antd";
+import { Divider, Input, Button, Dropdown, Space, Spin } from "antd";
 import { Link } from "react-router-dom";
 import { DataContext } from "../context/data.context";
 
@@ -51,7 +51,8 @@ const NotesMenu = () => {
   const [filter, setFilter] = useState("");
   const [sort, setSort] = useState("updatedAt");
 
-  const { notes, activeNote, user, showNotesMenu } = useContext(DataContext);
+  const { notes, activeNote, user, showNotesMenu, isLoading } =
+    useContext(DataContext);
 
   const filtered = notes.filter((elem) => {
     return elem.title.includes(filter);
@@ -63,7 +64,7 @@ const NotesMenu = () => {
   } else if (sort === "createdAt") {
     sorted = sortByCreatedDate(filtered);
   } else if (sort === "title") {
-    console.log('ran')
+    console.log("ran");
     sorted = sortByTitle(filtered);
   }
 
@@ -72,56 +73,65 @@ const NotesMenu = () => {
       id="notes-menu"
       style={{ marginLeft: showNotesMenu ? "0px" : "-270px" }}
     >
-      {user && (
-        <>
-          <Link id="notes-menu-create" className="link-no-decoration" to={`/`}>
-              Create Note&nbsp;<i className="fa-solid fa-plus"></i>
-          </Link>
-          <Space>
-            <Input
-              id="notes-filter"
-              placeholder="Filter"
-              onChange={(e) => setFilter(e.target.value)}
-            ></Input>
-            <Dropdown
-              trigger={["click"]}
-              menu={{
-                items: dropDownItems,
-                selectable: true,
-                defaultSelectedKeys: ["updatedAt"],
-                onClick: ({ key }) => {
-                  setSort(key);
-                },
-              }}
+      {user &&
+        (isLoading ? (
+          <div id="notes-menu-spinner">
+            <Spin size="large"></Spin>
+          </div>
+        ) : (
+          <>
+            <Link
+              id="notes-menu-create"
+              className="link-no-decoration"
+              to={`/`}
             >
-              <Button type="text" id="notes-menu-sort">
-                <i className="fa-solid fa-arrow-down-a-z"></i>
-              </Button>
-            </Dropdown>
-          </Space>
-          <Divider dashed />
-          {sorted.map((note, i) => {
-            return (
-              <div
-                className={`notes-menu-link ${
-                  activeNote === note._id && "active"
-                }`}
-                key={i}
+              Create Note&nbsp;<i className="fa-solid fa-plus"></i>
+            </Link>
+            <Space>
+              <Input
+                id="notes-filter"
+                placeholder="Filter"
+                onChange={(e) => setFilter(e.target.value)}
+              ></Input>
+              <Dropdown
+                trigger={["click"]}
+                menu={{
+                  items: dropDownItems,
+                  selectable: true,
+                  defaultSelectedKeys: ["updatedAt"],
+                  onClick: ({ key }) => {
+                    setSort(key);
+                  },
+                }}
               >
-                <Link className="link-no-decoration" to={`/${note._id}`}>
-                  {note.title}
-                  &emsp;
-                  <i
-                    className={`fa-solid fa-pencil ${
-                      activeNote !== note._id && "hidden"
-                    }`}
-                  ></i>
-                </Link>
-              </div>
-            );
-          })}
-        </>
-      )}
+                <Button type="text" id="notes-menu-sort">
+                  <i className="fa-solid fa-arrow-down-a-z"></i>
+                </Button>
+              </Dropdown>
+            </Space>
+            <Divider dashed />
+            {sorted.map((note, i) => {
+              return (
+                <div
+                  className={`notes-menu-link ${
+                    activeNote === note._id && "active"
+                  }`}
+                  key={i}
+                >
+                  <Link className="link-no-decoration" to={`/${note._id}`}>
+                    {note.title}
+                    &emsp;
+                    <i
+                      className={`fa-solid fa-pencil ${
+                        activeNote !== note._id && "hidden"
+                      }`}
+                    ></i>
+                  </Link>
+                </div>
+              );
+            })}
+          </>
+        ))}
     </div>
   );
 };

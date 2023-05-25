@@ -1,20 +1,70 @@
 import { useState, useContext, useEffect, useRef } from "react";
-import { Button, Input } from "antd";
+import { Button, Input, Alert } from "antd";
 import { useNavigate } from "react-router-dom";
-import { Editor } from "@tinymce/tinymce-react";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import { post } from "../services/authService";
 import { DataContext } from "../context/data.context";
+import { handle401 } from "../services/handle401";
+
+const quillModules = {
+  toolbar: [
+    [{ font: [] }],
+    [{ header: [1, 2, 3, 4, 5, 6, true] }],
+    ["bold", "italic", "underline", "strike"],
+    [{ color: [] }, { background: [] }],
+    // [{ script: "sub" }, { script: "super" }],
+    ["blockquote"],
+    [{ list: "ordered" }, { list: "bullet" }],
+    [/*{ indent: "-1" }, { indent: "+1" },*/ { align: [] }],
+    ["link", "image", "video"],
+    ["clean"],
+  ],
+};
+
+const quillFormats = [
+  "header",
+  "bold",
+  "italic",
+  "underline",
+  "strike",
+  "blockquote",
+  "list",
+  "bullet",
+  "link",
+  "color",
+  "image",
+  "background",
+  "align",
+  "size",
+  "font",
+];
+
+let lastEditorState = "";
 
 const CreateNote = () => {
   const [title, setTitle] = useState("");
   const [loading, setLoading] = useState("");
-  const editorRef = useRef(null);
+  const [editorState, setEditorState] = useState("");
+  const [error, setError] = useState(false);
 
-  const { getNotes, setActiveNote } = useContext(DataContext);
+  const { getNotes, setActiveNote, activeNote } = useContext(DataContext);
+
+  const setEditor = (state) => {
+    setEditorState(state);
+    lastEditorState = state;
+  };
 
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (activeNote != "") {
+      // just switched to create note view
+      setEditor("");
+    } else {
+      // still on create note view
+      setEditor(lastEditorState);
+    }
     setActiveNote(""); // reset active note
   }, []);
 
@@ -22,14 +72,22 @@ const CreateNote = () => {
     setLoading(true);
     post("/notes/create", {
       title,
-      content: editorRef.current.getContent(),
+      content: editorState,
     })
       .then((res) => {
         getNotes();
         navigate(`/${res.data._id}`);
       })
       .catch((err) => {
-        console.log(err)
+        handle401(err);
+        try {
+          setError(err.response.data.message);
+        } catch {
+          console.log("Unhandled error", err);
+          if(err.code === 'ERR_NETWORK'){
+            setError('File upload size is too large.');
+          }
+        }
       })
       .finally(() => {
         setLoading(false);
@@ -38,6 +96,12 @@ const CreateNote = () => {
 
   return (
     <>
+      {error && (
+        <>
+          <Alert message={error} type="error" />
+          <br></br>
+        </>
+      )}
       <Input
         placeholder="Title"
         className="notes-title"
@@ -45,18 +109,13 @@ const CreateNote = () => {
         onChange={(e) => setTitle(e.target.value)}
       ></Input>
       <br></br>
-      <Editor
-        apiKey="ot2bdgoybtbapmogrubcozadhnvaw74nono3sw2rqw183cze"
-        onInit={(evt, editor) => (editorRef.current = editor)}
-        initialValue={""}
-        init={{
-          height: 500,
-          menubar: false,
-          toolbar:
-            "undo redo spellcheckdialog  | blocks fontfamily fontsize | bold italic underline forecolor backcolor | link image | align lineheight checklist bullist numlist | indent outdent | removeformat typography",
-          content_style:
-            "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
-        }}
+      <ReactQuill
+        theme="snow"
+        modules={quillModules}
+        formats={quillFormats}
+        value={editorState}
+        onChange={setEditor}
+        placeholder="Content goes here..."
       />
       <br></br>
       <Button

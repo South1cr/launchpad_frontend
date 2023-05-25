@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { Button, Input, Form } from "antd";
+import { Button, Input, Alert } from "antd";
 import { AuthContext } from "../context/auth.context";
 import { DataContext } from "../context/data.context";
 
@@ -16,6 +16,7 @@ const Signup = () => {
     password: "",
   });
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const navigate = useNavigate();
 
@@ -28,22 +29,31 @@ const Signup = () => {
     setLoading(true);
     post("/users/signup", newUser)
       .then((results) => {
-        console.log("Signup", results.data);
         storeToken(results.data.authToken);
         setUser(results.data.user);
         navigate("/");
       })
       .catch((err) => {
-        console.log(err)
+        try {
+          setError(err.response.data.message);
+        } catch {
+          console.log('Unhandled error', err);
+        }
       })
-      .finally(()=> {
+      .finally(() => {
         setLoading(false);
-      })
+      });
   };
 
   return (
     <div>
       <h2>Sign Up</h2>
+      {error && (
+        <>
+          <Alert message={error} type="error" />
+          <br></br>
+        </>
+      )}
       <form>
         <label>Email</label>
         <br></br>

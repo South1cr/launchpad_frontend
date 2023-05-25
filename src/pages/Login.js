@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { Button, Input } from "antd";
+import { Button, Input, Alert } from "antd";
 import { AuthContext } from "../context/auth.context";
 import { DataContext } from "../context/data.context";
 import { post } from "../services/authService";
@@ -15,6 +15,7 @@ const Login = () => {
     password: "",
   });
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   const navigate = useNavigate();
 
@@ -33,16 +34,26 @@ const Login = () => {
         navigate("/");
       })
       .catch((err) => {
-        console.log(err)
+        try {
+          setError(err.response.data.message);
+        } catch {
+          console.log('Unhandled error', err);
+        }
       })
       .finally(() => {
         setLoading(false);
-      })
+      });
   };
 
   return (
     <div>
       <h2>Login</h2>
+      {error && (
+        <>
+          <Alert message={error} type="error" />
+          <br></br>
+        </>
+      )}
       <form>
         <label>Email</label>
         <br></br>

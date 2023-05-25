@@ -21,9 +21,9 @@ export const post = (route, body) => {
   const promise = axios.post(baseUrl + route, body, {
     headers: { Authorization: `Bearer ${token}` },
   })
-  .catch((err) => {
+  /*.catch((err) => {
     handle401(err)
     console.log(route, err);
-  })
+  })*/
   return promise;
 };

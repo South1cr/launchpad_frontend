@@ -36,17 +36,14 @@ body {
 }
 
 /* tiny mce overrides */
+
+/*
 .tox-tinymce {
   width: 100%;
   border-radius: 0px !important;
   max-width: 700px;
   border: 1px solid #ccc !important;
 }
-
-.tox-tinymce--disabled {
-  /*border: none !important;*/
-}
-
 .tox-tinymce--disabled .tox-editor-header {
   display: none !important;
 }
@@ -75,7 +72,12 @@ body {
   background-color: #ffffff !important;
   border-color: #d9d9d9 !important;
 }
-
+*/
+/* quill overrides */ 
+.quill {
+  width: 100%;
+  max-width: 700px;
+}
 
 #navbar {
   display: flex;
@@ -164,6 +166,12 @@ body {
   font-weight: bold;
 }
 
+#notes-menu-spinner {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
 #main-content {
   display: flex;
   align-items: center;
@@ -201,7 +209,7 @@ body {
   justify-content: center;
 }
 
-#note-display {
+#note-dates {
   width: 100%;
   max-width: 700px;
   display: flex;
@@ -209,10 +217,4 @@ body {
   justify-content: space-between;
   align-items: center;
   color: #aaa;
-}
-
-@media screen and (max-width: 768px) {
-  #note-toolbar {
-    display: none;
-  }
 }
