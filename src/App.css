@@ -160,12 +160,6 @@ body {
   position:relative;
 }
 
-@media screen and (max-width: 768px) {
-  #main-content {
-    margin-left: 0px !important;
-  }
-}
-
 .notes-title {
   border: none;
   border-bottom: 1px solid #ccc;
@@ -195,13 +189,16 @@ body {
 }
 
 @media screen and (max-width: 768px) {
+  
   #title {
     font-size: 34px;
   }
-}
 
-@media screen and (max-width: 768px) {
   #note-dates {
     font-size: 14px;
+  }
+
+  #main-content {
+    margin-left: 0px !important;
   }
 }
