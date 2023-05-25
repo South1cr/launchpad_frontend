@@ -1,2 +1,2 @@
-export const baseUrl = "http://localhost:4000"
-export const thisUrl = "http://localhost:3000"
+export const baseUrl = "https://launchpad-notes.fly.dev/"
+export const thisUrl = "https://launchpad-notes.netlify.app/"
