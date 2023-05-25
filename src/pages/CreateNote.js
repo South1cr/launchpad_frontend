@@ -102,7 +102,7 @@ const CreateNote = () => {
     <>
       {error && (
         <>
-          <Alert message={error} type="error" />
+          <Alert message={error} type="error" showIcon/>
           <br></br>
         </>
       )}

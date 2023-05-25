@@ -140,19 +140,17 @@ const UpdateNote = () => {
     );
   }
 
-  console.log(message);
-
   return (
     <>
       {error && (
         <>
-          <Alert message={error} type="error" />
+          <Alert message={error} type="error" showIcon />
           <br></br>
         </>
       )}
       {message && (
         <>
-          <Alert message={message} type="success" />
+          <Alert message={message} type="success" showIcon/>
           <br></br>
         </>
       )}

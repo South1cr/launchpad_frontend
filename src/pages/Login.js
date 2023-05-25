@@ -50,7 +50,7 @@ const Login = () => {
       <h2>Login</h2>
       {error && (
         <>
-          <Alert message={error} type="error" />
+          <Alert message={error} type="error" showIcon/>
           <br></br>
         </>
       )}
