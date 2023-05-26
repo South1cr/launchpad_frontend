@@ -159,6 +159,7 @@ const UpdateNote = () => {
         className="notes-title"
         id="title"
         value={title}
+        maxlength="15"
         onChange={(e) => setTitle(e.target.value)}
       ></Input>
       <br></br>
