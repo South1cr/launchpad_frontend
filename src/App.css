@@ -132,6 +132,8 @@ body {
   -moz-transition: font-size .4;
   -o-transition: font-size .4;
   transition: all .2s;
+  word-wrap: break-word;
+  max-width: 220px;
 }
 
 .notes-menu-link.active,
@@ -189,7 +191,7 @@ body {
 }
 
 @media screen and (max-width: 768px) {
-  
+
   #title {
     font-size: 34px;
   }

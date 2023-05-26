@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect, useRef } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Button, Input, Space, Modal, Spin, Alert } from "antd";
 import ReactQuill from "react-quill";
@@ -6,6 +6,7 @@ import "react-quill/dist/quill.snow.css";
 import { post, get } from "../services/authService";
 import { DataContext } from "../context/data.context";
 import ShareNote from "../components/ShareNote";
+import NoteDates from "../components/NoteDates";
 import { handle401 } from "../services/handle401";
 
 const quillModules = {
@@ -46,6 +47,7 @@ const quillFormats = [
 ];
 
 let lastEditorState = "";
+let lastTitle = "";
 
 const UpdateNote = () => {
   const { noteId } = useParams();
@@ -56,15 +58,20 @@ const UpdateNote = () => {
   const [loading, setLoading] = useState(true);
   const [updateLoading, setUpdateLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
-  const [editorState, setEditorState] = useState("");
+  const [editorState, setEditor] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [note, setNote] = useState(null);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
-  const setEditor = (state) => {
-    setEditorState(state);
+  const setEditorState = (state) => {
+    setEditor(state);
     lastEditorState = state;
+  };
+
+  const setTitleState = (title) => {
+    setTitle(title);
+    lastTitle = title;
   };
 
   const navigate = useNavigate();
@@ -72,15 +79,18 @@ const UpdateNote = () => {
   useEffect(() => {
     const foundNote = notes.find((elem) => elem._id === noteId);
     if (foundNote) {
-      setTitle(foundNote.title);
       setNote(foundNote);
       if (foundNote._id != activeNote) {
         // new note
+        console.log('diff note')
         setActiveNote(foundNote._id);
-        setEditor(foundNote.content);
+        setTitleState(foundNote.title);
+        setEditorState(foundNote.content);
       } else {
         // same note
-        setEditor(lastEditorState);
+        console.log('same note')
+        setTitleState(lastTitle);
+        setEditorState(lastEditorState);
       }
       setLoading(false);
     }
@@ -158,18 +168,12 @@ const UpdateNote = () => {
         placeholder="Title"
         className="notes-title"
         id="title"
+        maxLength={50}
         value={title}
-        maxlength="15"
-        onChange={(e) => setTitle(e.target.value)}
+        onChange={(e) => setTitleState(e.target.value)}
       ></Input>
       <br></br>
-      <div id="note-dates">
-        <Space>
-          <span>Updated:&nbsp;{new Date(note.updatedAt).toLocaleString()}</span>
-          <span>Created:&nbsp;{new Date(note.createdAt).toLocaleString()}</span>
-        </Space>
-        <Space></Space>
-      </div>
+        <NoteDates note={note} />
       <br></br>
       {
         <ReactQuill
@@ -177,7 +181,7 @@ const UpdateNote = () => {
           modules={quillModules}
           formats={quillFormats}
           value={editorState}
-          onChange={setEditor}
+          onChange={setEditorState}
         />
       }
       <br></br>

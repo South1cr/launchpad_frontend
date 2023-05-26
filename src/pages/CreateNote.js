@@ -45,18 +45,24 @@ const quillFormats = [
 ];
 
 let lastEditorState = "";
+let lastTitle = "";
 
 const CreateNote = () => {
   const [title, setTitle] = useState("");
   const [loading, setLoading] = useState("");
-  const [editorState, setEditorState] = useState("");
+  const [editorState, setEditor] = useState("");
   const [error, setError] = useState(false);
 
   const { getNotes, setActiveNote, activeNote } = useContext(DataContext);
 
-  const setEditor = (state) => {
-    setEditorState(state);
+  const setEditorState = (state) => {
+    setEditor(state);
     lastEditorState = state;
+  };
+
+  const setTitleState = (title) => {
+    setTitle(title);
+    lastTitle = title;
   };
 
   const navigate = useNavigate();
@@ -64,10 +70,12 @@ const CreateNote = () => {
   useEffect(() => {
     if (activeNote != "") {
       // just switched to create note view
-      setEditor("");
+      setTitleState("");
+      setEditorState("");
     } else {
       // still on create note view
-      setEditor(lastEditorState);
+      setTitleState(lastTitle);
+      setEditorState(lastEditorState);
     }
     setActiveNote(""); // reset active note
   }, []);
@@ -111,8 +119,8 @@ const CreateNote = () => {
         id="title"
         className="notes-title"
         value={title}
-        maxlength="15"
-        onChange={(e) => setTitle(e.target.value)}
+        maxLength={50}
+        onChange={(e) => setTitleState(e.target.value)}
       ></Input>
       <br></br>
       <ReactQuill
@@ -121,7 +129,7 @@ const CreateNote = () => {
         formats={quillFormats}
         preserveWhitespace={false}
         value={editorState}
-        onChange={setEditor}
+        onChange={setEditorState}
         placeholder="Content goes here..."
       />
       <br></br>

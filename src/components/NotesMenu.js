@@ -112,7 +112,7 @@ const NotesMenu = () => {
               </Dropdown>
             </Space>
             <Divider dashed />
-            <PerfectScrollbar className="notes-menu-scrollbar"  options={{suppressScrollX:true, useBothWheelAxes:false}}>
+            <PerfectScrollbar className="notes-menu-scrollbar"  options={{/*suppressScrollX:true, useBothWheelAxes:false*/}}>
               {sorted.map((note, i) => {
                 return (
                   <div
@@ -141,3 +141,5 @@ const NotesMenu = () => {
 };
 
 export default NotesMenu;
+
+
